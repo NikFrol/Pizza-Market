@@ -1,19 +1,21 @@
-import React from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-function SortPopup({ items }) {
-  const [visiblePopup, setVisiblePopup] = React.useState(false);
-  const [activeItem, setActiveItem] = React.useState(0);
-  const sortRef = React.useRef();
+const SortPopup = ({ items }) => {
+  
+  const [visiblePopup, setVisiblePopup] = useState(false);
+  const [activeItem, setActiveItem] = useState(0);
+  const sortRef = useRef();
   const activeLabel = items[activeItem];
 
   const toggleVisiblePopup = () => {
-    setVisiblePopup(!visiblePopup);
+    setVisiblePopup(prevState => !prevState);
   };
 
   const handleOutsideClick = (e) => {
     if (!e.path.includes(sortRef.current)) {
       setVisiblePopup(false);
     }
+    
   };
 
   const onSelectItem = (index) => {
@@ -21,10 +23,11 @@ function SortPopup({ items }) {
     setVisiblePopup(false);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     document.body.addEventListener('click', handleOutsideClick);
   }, []);
-
+//ref под капотом проверяет какой тип данных он получает 
+//при получении обьекта со свойством current то он передает туда ссылку на дом объект
   return (
     <div ref={sortRef} className="sort">
       <div className="sort__label">

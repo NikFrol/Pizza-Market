@@ -1,7 +1,8 @@
-import React from 'react'
+import { useState } from 'react'
 
-function Categories({ items, onClickItem }) {
-  const [activeItem, setActiveItem] = React.useState(null);
+const Categories = ({ items, onClickItem }) => {
+  
+  const [activeItem, setActiveItem] = useState(null);
 
   const onSelectItem = (index, name) => {
     setActiveItem(index);
