@@ -1,50 +1,54 @@
+
+import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux';
 
 import { Header } from './Components/index';
 import { Home, Cart } from './routes';
+import { setPizzas } from './redux/actions/pizzas';
 
-function App() {
+// function App() {
+//   React.useEffect(() => {
+//     axios.get('http://localhost:3000/db.json').then(({ data }) => {
+//       setPizzas(data.pizzas);
+//     });
+//   }, []);
 
-  const [pizzas, setPizzas] = useState([]);
+//   return ;
+// }
 
-  useEffect(() => {
+class App extends React.Component {
+  componentDidMount() {
     axios.get('http://localhost:3000/db.json').then(({ data }) => {
-      setPizzas(data.pizzas);
+      this.props.setPizzas(data.pizzas);
     });
+  }
 
-  }, []);
-
-
-
-  return (
-    <>
-      <Header />
+  render() {
+    console.log(this.props);
+    return (
       <div className="wrapper">
-        <div className="content"></div>
-        <div className="container"></div>
-        <div className="content__top">
-          <Switch>
-            <Route path='/404' render={() => (
-              <h1>Not Found 404</h1>)} />
-            <Route path="/" render={() => <Home pizzas={pizzas} />} exact />
-            <Route path="/cart" component={Cart} />
-            <Route path='/about' render={() => (
-              <h1>About</h1>
-            )} />
-            <Route path='/contact' render={() => (
-              <h1>Contacts</h1>
-            )} />
-            <Route render={() => (
-              <Redirect to={'/404'} />
-            )
-            } />
-          </Switch>
+        <Header />
+        <div className="content">
+          <Route path="/" render={() => <Home items={this.props.items} />} exact />
+          <Route path="/cart" component={Cart} exact />
         </div>
       </div>
-    </>
-  )
-
+    );
+  }
 }
-export default App;
+
+export default connect(
+  (state) => {
+    return {
+      items: state.pizzas.items,
+      filters: state.filters,
+    };
+  },
+  (dispatch) => {
+    return {
+      setPizzas: (items) => dispatch(setPizzas(items)),
+    };
+  },
+)(App);
