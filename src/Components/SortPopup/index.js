@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 
-const SortPopup = ({ items }) => {
-  
+const SortPopup = memo(({ items }) => {
+
   const [visiblePopup, setVisiblePopup] = useState(false);
   const [activeItem, setActiveItem] = useState(0);
   const sortRef = useRef();
@@ -15,7 +15,7 @@ const SortPopup = ({ items }) => {
     if (!e.path.includes(sortRef.current)) {
       setVisiblePopup(false);
     }
-    
+
   };
 
   const onSelectItem = (index) => {
@@ -26,8 +26,8 @@ const SortPopup = ({ items }) => {
   useEffect(() => {
     document.body.addEventListener('click', handleOutsideClick);
   }, []);
-//ref под капотом проверяет какой тип данных он получает 
-//при получении обьекта со свойством current то он передает туда ссылку на дом объект
+  //ref под капотом проверяет какой тип данных он получает 
+  //при получении обьекта со свойством current то он передает туда ссылку на дом объект
   return (
     <div ref={sortRef} className="sort">
       <div className="sort__label">
@@ -63,6 +63,6 @@ const SortPopup = ({ items }) => {
       )}
     </div>
   );
-}
+})
 
 export default SortPopup;
