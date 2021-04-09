@@ -8,4 +8,3 @@
     Redux thunk
     json-server
     Axios
-    classnames
