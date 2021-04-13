@@ -24,9 +24,9 @@ const Home = () => {
 
   const onClickCategory = (index) => dispatch(setCategory(index));
 
-  const onSelectSortType = useCallback((type) => {
-    dispatch(setSortBy(type));
-  }, []);
+  const onSelectSortType = useCallback( async(type) => {
+     await dispatch(setSortBy(type));
+  }, [dispatch]);
 
   const handleAddPizzaToCart = (obj) => {
     dispatch({
@@ -36,8 +36,9 @@ const Home = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchPizzas(sortBy, category));
-  }, [category, sortBy]);
+   const someFoo = async() => await dispatch(fetchPizzas(sortBy, category));
+   someFoo();
+  }, [category, sortBy, dispatch]);
 
   return (
     <div className="container">
